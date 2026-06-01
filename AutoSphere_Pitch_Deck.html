@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoSphere AI: Pitch Deck — Supply Chain & Manufacturing Resilience</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: rgba(30, 41, 59, 0.7);
+            --border-glow: rgba(56, 189, 248, 0.2);
+            --primary: #38bdf8;
+            --primary-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            --accent-green: #34d399;
+            --accent-red: #f87171;
+            --accent-yellow: #fbbf24;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --slide-transition: 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Slide Container */
+        .presentation-container {
+            position: relative;
+            flex-grow: 1;
+            width: 100vw;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1200px;
+        }
+
+        /* Slide Core */
+        .slide {
+            position: absolute;
+            width: 90%;
+            max-width: 1200px;
+            height: 80vh;
+            background: var(--bg-card);
+            border: 1px solid var(--border-glow);
+            border-radius: 24px;
+            padding: 4% 5%;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            opacity: 0;
+            transform: translateX(100px) rotateY(-5deg);
+            pointer-events: none;
+            transition: opacity var(--slide-transition), transform var(--slide-transition);
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0) rotateY(0deg);
+            pointer-events: auto;
+            z-index: 10;
+        }
+
+        .slide.previous {
+            opacity: 0;
+            transform: translateX(-100px) rotateY(5deg);
+            pointer-events: none;
+        }
+
+        /* Glowing Background Accents */
+        .glow-orb {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, rgba(15, 23, 42, 0) 70%);
+            border-radius: 50%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .orb-top-right {
+            top: -100px;
+            right: -100px;
+        }
+
+        .orb-bottom-left {
+            bottom: -150px;
+            left: -150px;
+            background: radial-gradient(circle, rgba(129, 140, 248, 0.15) 0%, rgba(15, 23, 42, 0) 70%);
+        }
+
+        /* Slide Typography */
+        h1, h2, h3 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+        }
+
+        .slide-header {
+            margin-bottom: 20px;
+        }
+
+        .theme-tag {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+
+        .slide-title {
+            font-size: 2.8rem;
+            line-height: 1.2;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+        }
+
+        .slide-body {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            line-height: 1.6;
+            color: var(--text-main);
+        }
+
+        /* Layout Grid Helpers */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            width: 100%;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: 100%;
+        }
+
+        /* Components Card Styling */
+        .glass-card {
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 24px;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(56, 189, 248, 0.3);
+            box-shadow: 0 10px 20px rgba(56, 189, 248, 0.05);
+        }
+
+        .glass-card h3 {
+            color: var(--primary);
+            margin-bottom: 12px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .glass-card ul {
+            list-style-type: none;
+        }
+
+        .glass-card li {
+            margin-bottom: 8px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            position: relative;
+            padding-left: 15px;
+        }
+
+        .glass-card li::before {
+            content: "•";
+            color: var(--primary);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        /* Slide Footer & Navigation controls */
+        .controls-bar {
+            width: 100vw;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.9);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            z-index: 100;
+        }
+
+        .progress-indicator {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: var(--primary);
+            padding: 10px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            background: var(--primary);
+            color: var(--bg-dark);
+            transform: translateY(-2px);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.05);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--primary-gradient);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Highlight styles */
+        .highlight {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .badge-green { background: rgba(52, 211, 153, 0.1); color: var(--accent-green); border: 1px solid rgba(52, 211, 153, 0.2); }
+        .badge-red { background: rgba(248, 113, 113, 0.1); color: var(--accent-red); border: 1px solid rgba(248, 113, 113, 0.2); }
+        .badge-yellow { background: rgba(251, 191, 36, 0.1); color: var(--accent-yellow); border: 1px solid rgba(251, 191, 36, 0.2); }
+
+        /* Specific Slide Styling */
+        .title-slide {
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .title-slide h1 {
+            font-size: 4rem;
+            margin-bottom: 16px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+        }
+        .title-slide h2 {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 40px;
+        }
+
+        /* Equation Box style */
+        .equation-box {
+            background: rgba(56, 189, 248, 0.05);
+            border-left: 4px solid var(--primary);
+            padding: 16px;
+            border-radius: 0 16px 16px 0;
+            margin-top: 15px;
+            font-family: monospace;
+            font-size: 1rem;
+            color: var(--primary);
+        }
+
+        /* Table custom styling inside slides */
+        .slide-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.95rem;
+        }
+        .slide-table th {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+            color: var(--primary);
+        }
+        .slide-table td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .winner-row {
+            background: rgba(52, 211, 153, 0.05);
+            border-left: 4px solid var(--accent-green);
+        }
+    </style>
+</head>
+<body>
+    <div class="glow-orb orb-top-right"></div>
+    <div class="glow-orb orb-bottom-left"></div>
+
+    <div class="presentation-container">
+
+        <!-- SLIDE 1: TITLE SLIDE -->
+        <div class="slide title-slide active" id="slide-1">
+            <div>
+                <span class="theme-tag">Theme 1: Supply Chain & Manufacturing Resilience</span>
+                <h1>AUTOSPHERE AI</h1>
+                <h2>Intelligent Decision & Sourcing Ecosystem for Resilient Automotive Networks</h2>
+                <div class="glass-card" style="display:inline-block; padding: 15px 30px; font-weight:600; font-size:1.1rem; border-color: rgba(56, 189, 248, 0.4);">
+                    High-Fidelity Python Prototype Pitch Deck
+                </div>
+            </div>
+            <div style="font-size: 0.9rem; color: var(--text-muted); margin-top:50px;">
+                AI-Powered Sourcing, Quality Risk Adaptability, and Demand Prediction
+            </div>
+        </div>
+
+        <!-- SLIDE 2: THE SUPPLY CHAIN CRISIS -->
+        <div class="slide" id="slide-2">
+            <div class="slide-header">
+                <span class="theme-tag">Problem Statement</span>
+                <h2 class="slide-title">The Automotive Sourcing Bottleneck</h2>
+            </div>
+            <div class="slide-body">
+                <div class="grid-2">
+                    <div class="glass-card" style="border-left:4px solid var(--accent-red);">
+                        <h3>Global Vulnerability</h3>
+                        <p style="color:var(--text-muted); margin-top:10px;">
+                            Automotive supply chains are highly vulnerable to disruptions (geopolitical tensions, microchip allocation caps, shipping constraints, and sudden raw material halts). 
+                            Single points of failure threaten production continuity and trigger massive cost escalations.
+                        </p>
+                    </div>
+                    <div class="glass-card" style="border-left:4px solid var(--accent-yellow);">
+                        <h3>The Sourcing Challenge</h3>
+                        <p style="color:var(--text-muted); margin-top:10px;">
+                            To prevent shutdowns, manufacturers require an agile solution that proactively monitors supplier risk, analyzes complex unstructured quality signals, and executes **multi-criteria alternate sourcing** that balances Cost, Capacity, and Geopolitical Risk.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: AUTOSPHERE AI SOLUTION SUMMARY -->
+        <div class="slide" id="slide-3">
+            <div class="slide-header">
+                <span class="theme-tag">The Solution</span>
+                <h2 class="slide-title">AutoSphere AI Prototype</h2>
+            </div>
+            <div class="slide-body">
+                <div class="grid-3">
+                    <div class="glass-card">
+                        <h3>1. Demand Prediction</h3>
+                        <p style="color:var(--text-muted); font-size:0.9rem;">
+                            Uses linear trend regression models to analyze historical orders and forecast next-month inventory, verifying aggregate capacity in real-time.
+                        </p>
+                    </div>
+                    <div class="glass-card">
+                        <h3>2. NLP Risk Adjuster</h3>
+                        <p style="color:var(--text-muted); font-size:0.9rem;">
+                            Simulates a Natural Language Processing engine scanning raw feedback, automatically linking complaints to suppliers and dynamically raising risk indexes.
+                        </p>
+                    </div>
+                    <div class="glass-card">
+                        <h3>3. Procurement Solver</h3>
+                        <p style="color:var(--text-muted); font-size:0.9rem;">
+                            Applies Min-Max Normalization over candidate attributes, computing composite scores to recommend optimal sourcing options.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: FORECASTING ENGINE -->
+        <div class="slide" id="slide-4">
+            <div class="slide-header">
+                <span class="theme-tag">Core Engine — Stage 1</span>
+                <h2 class="slide-title">Demand Forecasting & Verification</h2>
+            </div>
+            <div class="slide-body">
+                <div class="grid-2">
+                    <div>
+                        <p style="margin-bottom:15px;">AutoSphere AI predicts exact monthly quantities using a <span class="highlight">Least-Squares Linear Regression</span> model ($y = m \cdot t + c$).</p>
+                        <p style="margin-bottom:15px; color:var(--text-muted);">
+                            If sudden market crashes result in negative projected slopes, the engine activates a robust fallback: it shifts to a **Simple Moving Average (SMA)** of the last 3 periods, ensuring the floor never goes below 0.
+                        </p>
+                        <div class="equation-box">
+                            # Linear Fit Equation Solver:<br>
+                            m, c = np.linalg.lstsq(A, y, rcond=None)[0]<br>
+                            forecast = m * (n + 1) + c
+                        </div>
+                    </div>
+                    <div class="glass-card" style="display:flex; flex-direction:column; justify-content:center;">
+                        <h4 style="color:var(--primary); margin-bottom:10px;">Live Mock Run: "Brake Pads" Sourcing</h4>
+                        <p style="font-size:0.95rem; margin-bottom:8px;">• Historical demand: <span class="highlight">[8200, 8500, 8700, 8900, 9200, 9400]</span></p>
+                        <p style="font-size:0.95rem; margin-bottom:8px;">• MoM Demand projection: <span class="highlight" style="color:var(--accent-green);">9,647 units (+2.63% MoM growth)</span></p>
+                        <p style="font-size:0.95rem; margin-bottom:8px;">• Capacity verification check: <span class="highlight" style="color:var(--accent-green);">Aggregate capacity checked & approved (30k available)</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: NLP RISK ENGINE -->
+        <div class="slide" id="slide-5">
+            <div class="slide-header">
+                <span class="theme-tag">Core Engine — Stage 2</span>
+                <h2 class="slide-title">Unstructured Feedback & NLP Risk Parser</h2>
+            </div>
+            <div class="slide-body">
+                <div class="grid-2">
+                    <div class="glass-card">
+                        <h3>Dynamic Entity Extraction</h3>
+                        <p style="color:var(--text-muted); font-size:0.95rem; margin-top:8px;">
+                            AutoSphere scans text fields using case-insensitive boundary regexes to dynamically link suppliers (e.g. *Apex Parts Corp*) and parts (e.g. *Brake Pads*).
+                        </p>
+                        <h4 style="margin-top:15px; font-size:1rem; color:var(--primary);">Keyword Severity Rules:</h4>
+                        <ul style="font-size:0.85rem; margin-top:5px;">
+                            <li><span class="badge badge-red">Critical (+0.30)</span> recall, hazard, dangerous, crack, fire</li>
+                            <li><span class="badge badge-yellow">Severe (+0.15)</span> fail, defect, faulty, leak, broken</li>
+                            <li><span class="badge badge-yellow" style="color:white; border-color:white;">Moderate (+0.08)</span> wear, delay, slow, rust, friction</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p style="margin-bottom:15px;">During simulation, raw feedback triggers dynamic updates that are instantly written to the persistent JSON layer:</p>
+                        <div class="glass-card" style="font-size:0.9rem; margin-bottom:10px; border-color:var(--accent-red);">
+                            <strong>Feedback:</strong> "Recall and safety defect on brake pads from Apex Parts Corp..."
+                            <div style="margin-top:5px; color:var(--accent-red);">Result: S1 Risk Score escalates from 0.15 to 0.60</div>
+                        </div>
+                        <div class="glass-card" style="font-size:0.9rem; border-color:var(--accent-red);">
+                            <strong>Feedback:</strong> "Brake pads from Zephyr Braking Co are wearing out causing a dangerous squeal..."
+                            <div style="margin-top:5px; color:var(--accent-red);">Result: S3 Risk Score escalates from 0.35 to 0.73</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: OPTIMIZATION CALCULATIONS -->
+        <div class="slide" id="slide-6">
+            <div class="slide-header">
+                <span class="theme-tag">Core Engine — Stage 3</span>
+                <h2 class="slide-title">Multi-Criteria Procurement Optimizer</h2>
+            </div>
+            <div class="slide-body">
+                <div class="grid-2">
+                    <div>
+                        <p style="margin-bottom:12px;">Sourcing decisions can't rely on raw price alone. AutoSphere AI normalizes data parameters using **Min-Max Scaling** to rank candidates fairly:</p>
+                        <ul style="font-size:0.9rem; list-style-type:square; margin-left:20px; color:var(--text-muted); line-height:1.5;">
+                            <li style="margin-bottom:6px;"><span class="highlight">Cost Score (CS)</span>: Inverted (lower cost = 1.0, max cost = 0.0)</li>
+                            <li style="margin-bottom:6px;"><span class="highlight">Risk Score (RS)</span>: Inverted (1.0 - risk_score)</li>
+                            <li style="margin-bottom:6px;"><span class="highlight">Capacity Score (CapS)</span>: Direct (max capacity = 1.0, min = 0.0)</li>
+                        </ul>
+                        <div class="equation-box">
+                            Composite Optimization Formula:<br>
+                            Score = 0.40 * CS + 0.40 * RS + 0.20 * CapS
+                        </div>
+                    </div>
+                    <div class="glass-card" style="display:flex; flex-direction:column; justify-content:center;">
+                        <h4 style="color:var(--primary); margin-bottom:12px;">Why did S2 (Vertex Automotive) win?</h4>
+                        <p style="font-size:0.95rem; color:var(--text-muted); margin-bottom:8px;">
+                            • **Vertex (S2)** had the highest base cost (**$48.00**), yielding a Cost Score of **0.00**.
+                        </p>
+                        <p style="font-size:0.95rem; color:var(--text-muted); margin-bottom:8px;">
+                            • However, due to its low risk (**0.08**) and maximum capacity (**12,000**), it achieved a Risk Score of **0.92** and Capacity Score of **1.00**.
+                        </p>
+                        <p style="font-size:0.95rem; color:var(--accent-green); font-weight:600;">
+                            • Balanced Utility: Score = 0.5680 (winning Rank #1 over compromised low-cost alternatives!).
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: LIVE SIMULATION MATRIX -->
+        <div class="slide" id="slide-7">
+            <div class="slide-header">
+                <span class="theme-tag">Simulation Demo Results</span>
+                <h2 class="slide-title">Procurement Scoring Matrix</h2>
+            </div>
+            <div class="slide-body">
+                <div style="width:100%;">
+                    <p style="font-size:1.05rem;">Optimization output table for **Brake Pads** sourcing (after NLP risk escalations):</p>
+                    <table class="slide-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Supplier Name</th>
+                                <th>Base Cost</th>
+                                <th>Capacity</th>
+                                <th>Cost Sc</th>
+                                <th>Risk Sc</th>
+                                <th>Cap Sc</th>
+                                <th>Composite Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="winner-row">
+                                <td><span style="color:var(--accent-green); font-weight:bold;">#1</span></td>
+                                <td><strong>Vertex Automotive (S2)</strong></td>
+                                <td>$48.00</td>
+                                <td>12,000</td>
+                                <td>0.00</td>
+                                <td>0.92</td>
+                                <td>1.00</td>
+                                <td><strong style="color:var(--accent-green);">0.5680</strong></td>
+                            </tr>
+                            <tr>
+                                <td>#2</td>
+                                <td>Zephyr Braking Co (S3)</td>
+                                <td>$38.00</td>
+                                <td>8,000</td>
+                                <td>1.00</td>
+                                <td>0.27</td>
+                                <td>0.00</td>
+                                <td>0.5080</td>
+                            </tr>
+                            <tr>
+                                <td>#3</td>
+                                <td>Apex Parts Corp (S1)</td>
+                                <td>$45.00</td>
+                                <td>10,000</td>
+                                <td>0.30</td>
+                                <td>0.40</td>
+                                <td>0.50</td>
+                                <td>0.3800</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: DASHBOARD CONTROL PANEL -->
+        <div class="slide" id="slide-8">
+            <div class="slide-header">
+                <span class="theme-tag">Enterprise Ecosystem Features</span>
+                <h2 class="slide-title">Interactive Dashboard & Persistence</h2>
+            </div>
+            <div class="slide-body">
+                <div class="grid-2">
+                    <div class="glass-card" style="border-color:var(--primary);">
+                        <h3>1. JSON Database Persistence</h3>
+                        <p style="color:var(--text-muted); font-size:0.95rem; margin-top:8px;">
+                            AutoSphere AI maintains a local `suppliers_state.json` file. Real-time NLP complaint updates and new supplier registrations persist across program restarts!
+                        </p>
+                    </div>
+                    <div class="glass-card" style="border-color:var(--primary);">
+                        <h3>2. Pandas CSV Sourcing Reports</h3>
+                        <p style="color:var(--text-muted); font-size:0.95rem; margin-top:8px;">
+                            Scores, metrics, and ranking sequences are exported to standard-compliant CSV files in the workspace, ensuring quick shop floor integration and operator guidance.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: HACKATHON FOCUS ALIGNMENT -->
+        <div class="slide" id="slide-9">
+            <div class="slide-header">
+                <span class="theme-tag">Hackathon Themes</span>
+                <h2 class="slide-title">Strategic Value & Future Scale</h2>
+            </div>
+            <div class="slide-body">
+                <div class="grid-3">
+                    <div class="glass-card">
+                        <h4 style="color:var(--primary);">Risk & Bottleneck Detection</h4>
+                        <p style="color:var(--text-muted); font-size:0.85rem; margin-top:6px;">
+                            Early risk extraction from emails, quality reports, and customer complaints dynamically feeds into alternate sourcing weights.
+                        </p>
+                    </div>
+                    <div class="glass-card">
+                        <h4 style="color:var(--primary);">Geopolitical Sourcing</h4>
+                        <p style="color:var(--text-muted); font-size:0.85rem; margin-top:6px;">
+                            Alternate sourcing algorithms are structured to integrate geographical risk indices, helping teams transition from single-source vulnerabilities.
+                        </p>
+                    </div>
+                    <div class="glass-card">
+                        <h4 style="color:var(--primary);">Process Optimization (Cp, Cpk)</h4>
+                        <p style="color:var(--text-muted); font-size:0.85rem; margin-top:6px;">
+                            Ready to scale by linking supplier capacity parameters directly to shop floor process capabilities (Cp, Cpk) and defect sensors.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 10: CONCLUSION -->
+        <div class="slide title-slide" id="slide-10">
+            <div>
+                <span class="theme-tag">Conclusion & Pitch Summary</span>
+                <h1 style="font-size:3.5rem;">Resilient Supply Chains Start Here</h1>
+                <h2 style="font-size:1.4rem; max-width:800px; margin: 0 auto 30px;">
+                    AutoSphere AI combines predictive trend analytics, simulated NLP quality feedback extraction, and multi-criteria optimization to secure production.
+                </h2>
+                <div class="glass-card" style="display:inline-block; border-color:var(--accent-green); padding:12px 24px; font-weight:600; color:var(--accent-green);">
+                    ✔ Python Prototype Completed, Tested, and persistent.
+                </div>
+            </div>
+            <div style="font-size:0.9rem; color:var(--text-muted); margin-top:40px;">
+                Ready for Enterprise Scale — AutoSphere AI Prototype
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Slide controls -->
+    <div class="controls-bar">
+        <div class="progress-indicator" id="slide-num">Slide 1 of 10</div>
+        <div class="nav-buttons">
+            <button class="nav-btn" onclick="prevSlide()">← Previous</button>
+            <button class="nav-btn" onclick="nextSlide()">Next →</button>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentSlideIndex = 1;
+        const totalSlides = 10;
+
+        function updateSlidePosition() {
+            // Hide all slides
+            for (let i = 1; i <= totalSlides; i++) {
+                const slide = document.getElementById(`slide-${i}`);
+                slide.classList.remove('active', 'previous');
+                
+                if (i < currentSlideIndex) {
+                    slide.classList.add('previous');
+                } else if (i === currentSlideIndex) {
+                    slide.classList.add('active');
+                }
+            }
+
+            // Update UI elements
+            document.getElementById('slide-num').textContent = `Slide ${currentSlideIndex} of ${totalSlides}`;
+            const progressPercent = ((currentSlideIndex - 1) / (totalSlides - 1)) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+        }
+
+        function nextSlide() {
+            if (currentSlideIndex < totalSlides) {
+                currentSlideIndex++;
+                updateSlidePosition();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlideIndex > 1) {
+                currentSlideIndex--;
+                updateSlidePosition();
+            }
+        }
+
+        // Keyboard Controls
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight' || event.key === ' ' || event.key === 'Enter') {
+                nextSlide();
+            } else if (event.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+    </script>
+</body>
+</html>

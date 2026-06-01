@@ -1,0 +1,17 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# State files & local databases
+suppliers_state.json
+test_suppliers_state.json
+test_report.csv
+sourcing_report.csv
+
+# Environments & IDEs
+.env
+venv/
+ENV/
+.vscode/
+.idea/
