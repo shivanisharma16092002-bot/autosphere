@@ -26,7 +26,7 @@ def export_rankings_to_csv(rankings: List[Dict[str, Any]], filepath: str = "sour
             "Supplier Name": s.name,
             "Location": s.location,
             "Component Type": s.component_type,
-            "Base Cost per Unit ($)": round(s.base_cost, 2),
+            "Base Cost per Unit (₹)": round(s.base_cost, 2),
             "Updated Risk Score": round(s.risk_score, 4),
             "Monthly Capacity (Units)": s.capacity,
             "Utility Score: Cost (Normalized)": round(item["cost_score"], 4),

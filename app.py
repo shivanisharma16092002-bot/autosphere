@@ -28,18 +28,18 @@ DEFAULT_STATE_FILE = "suppliers_state.json"
 HISTORICAL_DEMAND = [8200, 8500, 8700, 8900, 9200, 9400]
 DEMAND_PROFILE = MarketDemand(
     component_type="Brake Pads",
-    target_cost=42.00,
+    target_cost=4500.00,
     required_quantity=9500,
     historical_demand=HISTORICAL_DEMAND
 )
 
 def get_default_suppliers() -> List[Supplier]:
     return [
-        Supplier(id="S1", name="Apex Parts Corp", location="Detroit, USA", component_type="Brake Pads", base_cost=45.00, risk_score=0.15, capacity=10000),
-        Supplier(id="S2", name="Vertex Automotive", location="Munich, Germany", component_type="Brake Pads", base_cost=48.00, risk_score=0.08, capacity=12000),
-        Supplier(id="S3", name="Zephyr Braking Co", location="Shanghai, China", component_type="Brake Pads", base_cost=38.00, risk_score=0.35, capacity=8000),
-        Supplier(id="S4", name="Quantum Tech Inc", location="Tokyo, Japan", component_type="Microchips", base_cost=12.50, risk_score=0.05, capacity=50000),
-        Supplier(id="S5", name="GlobalTech Solutions", location="Seoul, South Korea", component_type="Microchips", base_cost=11.00, risk_score=0.20, capacity=45000)
+        Supplier(id="S1", name="Apex Parts Corp", location="Pune, Maharashtra", component_type="Brake Pads", base_cost=4500.00, risk_score=0.15, capacity=10000),
+        Supplier(id="S2", name="Vertex Automotive", location="Chennai, Tamil Nadu", component_type="Brake Pads", base_cost=4800.00, risk_score=0.08, capacity=12000),
+        Supplier(id="S3", name="Zephyr Braking Co", location="Gurugram, Haryana", component_type="Brake Pads", base_cost=3200.00, risk_score=0.35, capacity=8000),
+        Supplier(id="S4", name="Quantum Tech Inc", location="Bengaluru, Karnataka", component_type="Microchips", base_cost=1250.00, risk_score=0.05, capacity=50000),
+        Supplier(id="S5", name="GlobalTech Solutions", location="Hyderabad, Telangana", component_type="Microchips", base_cost=1100.00, risk_score=0.20, capacity=45000)
     ]
 
 # Keep weights in a mutable global config
