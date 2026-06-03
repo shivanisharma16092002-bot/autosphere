@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  autosphere:
+    build: .
+    container_name: autosphere-app
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./suppliers_state.json:/app/suppliers_state.json
+    environment:
+      - PORT=8000
+    restart: unless-stopped
